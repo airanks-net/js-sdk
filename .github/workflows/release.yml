@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+# npm trusted publisher must be configured on npmjs.com first:
+# org=airanks-net, repo=js-sdk, workflow-filename=release.yml.
+# The FIRST publish may need a one-time npm token before OIDC trusted
+# publishing takes over — trusted publishing only works after a package
+# already exists on npm with the trusted publisher linked.
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test --if-present
+      - run: npm publish --provenance --access public
