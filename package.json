@@ -1,0 +1,56 @@
+{
+  "name": "@airanks-net/sdk",
+  "version": "1.0.0",
+  "description": "JS/TS SDK for the AIR API (airanks.net) — AI optimization rankings: look up a domain's AIR score, search domains/brands/phrases, and check who's logged in. Works in Node and the browser.",
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "keywords": [
+    "airanks",
+    "air",
+    "ai optimization",
+    "ai search",
+    "ai rankings",
+    "llm seo",
+    "sdk",
+    "api-client"
+  ],
+  "author": {
+    "name": "Jeremy Schoemaker",
+    "url": "https://airanks.net"
+  },
+  "license": "MIT",
+  "homepage": "https://airanks.net",
+  "repository": {
+    "type": "git",
+    "url": "https://git.shoemoney.ai/shoemoney/airanks-oss.git",
+    "directory": "js-sdk"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}
