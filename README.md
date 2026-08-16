@@ -48,9 +48,14 @@ Requires **Node 18+** (for global `fetch`) server-side; any modern browser clien
 
 ## ⚡ Quick Start
 
+> ⚠️ Every request needs a token — get a free one at
+> **[airanks.net/tokens](https://airanks.net/tokens)**, then set `AIR_API_KEY` (Node) or pass
+> `apiKey` (browser). See [Auth](#-auth--shared-across-every-air-client) below.
+
 ```ts
 import { AirClient } from '@airanks-net/sdk';
 
+// Node: reads AIR_API_KEY, or ~/.config/air/auth.json written by `air login`.
 const client = new AirClient();
 
 const { data: domain } = await client.domain('stripe.com');
@@ -122,18 +127,25 @@ flowchart LR
     A["🔑 AIR_API_KEY env var\n(Node only, explicit intent)"] -->|found| T["Attach Bearer token"]
     A -->|not set| B["📄 ~/.config/air/auth.json\n(written by `air login`)"]
     B -->|found, host matches| T
-    B -->|not found| C["👤 Anonymous\n(rate-limited)"]
+    B -->|not found| C["🚫 Anonymous\n(401 authentication_required)"]
 ```
 
 1. **`AIR_API_KEY` env var** (Node only) — explicit intent, always attaches.
 2. **`~/.config/air/auth.json`** (Node only) — the file `air login` writes. A token loaded from
    here only attaches to requests aimed at the host it was saved for, so a repointed `apiBase`
    can't accidentally leak it elsewhere.
-3. **Anonymous** — no token, subject to the anonymous rate limit.
+3. **Anonymous** — no token, request rejected: the API returns `401` with
+   `error.code === "authentication_required"` (the message includes the signup URL).
 
 > ℹ️ **One login, every client.** `AIR_API_KEY` env > `~/.config/air/auth.json` > anonymous — the
 > same three-step resolution runs in this SDK, the `air` CLI, and the browser toolbar, so logging
-> in once works everywhere.
+> in once works everywhere. There is no working anonymous fallback anymore — every caller except
+> the official browser toolbar needs a token.
+
+> 🔑 **A free account is required.** Every request through this SDK needs a token — grab one at
+> **[airanks.net/tokens](https://airanks.net/tokens)**, then set it via `AIR_API_KEY` (Node) or
+> pass it explicitly as `apiKey` to the client constructor (browser, or to override Node's
+> resolved token).
 
 In the **browser**, this SDK never reads env vars or touches disk — pass a token explicitly:
 
