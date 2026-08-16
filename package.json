@@ -1,6 +1,6 @@
 {
   "name": "@airanks-net/sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JS/TS SDK for the AIR API (airanks.net) — AI optimization rankings: look up a domain's AIR score, search domains/brands/phrases, and check who's logged in. Works in Node and the browser.",
   "type": "module",
   "main": "./dist/cjs/index.js",
